@@ -2,94 +2,50 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>乗法公式ゲーム</title>
+  <title>乗法公式ゲーム (ax±by)²</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f0f0f0;
-    }
-    #container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input[type="text"] {
-      width: 300px;
-      font-size: 16px;
-    }
-    button {
-      font-size: 16px;
-      margin-top: 10px;
-      padding: 5px 10px;
-    }
-    h1 {
-      color: #333;
-    }
+    body { font-family: Arial; padding: 20px; }
+    input[type="text"] { width: 300px; font-size: 16px; }
+    button { font-size: 16px; margin: 5px 5px 10px 0; }
   </style>
 </head>
 <body>
-  <div id="container">
-    <h1>乗法公式ゲーム</h1>
-    <div id="question"></div>
-    <input type="text" id="answer" placeholder="例: 4x²-6xy+9y²">
-    <br>
-    <button onclick="checkAnswer()">答える！</button>
-    <p id="result"></p>
-    <p id="score">0問正解中</p>
+  <h1>乗法公式ゲーム (ax±by)²</h1>
+  <div id="question"></div>
+  <input type="text" id="answer" placeholder="x²+xy+y² みたいに入力">
+  <br>
+  <div>
+    <!-- 項目入力用ボタン -->
+    <button onclick="addTerm('x²')">x²</button>
+    <button onclick="addTerm('xy')">xy</button>
+    <button onclick="addTerm('y²')">y²</button>
+    <button onclick="addTerm('+')">+</button>
+    <button onclick="addTerm('-')">-</button>
+    <button onclick="clearInput()">消去</button>
   </div>
+  <button onclick="checkAnswer()">解答！</button>
+  <p id="result"></p>
+  <p id="score">0問正解中</p>
 
   <script>
     let questionCount = 0;
     let correctCount = 0;
-    let correctExpansion = "";
+    let a, b, plus, correctExpansion;
 
     function generateQuestion() {
-      const isSquare = Math.random() < 0.5;
+      a = Math.floor(Math.random() * 9) + 1;
+      b = Math.floor(Math.random() * 9) + 1;
+      plus = Math.random() < 0.5;
 
-      let questionText = "";
-      if (isSquare) {
-        const a = Math.floor(Math.random() * 10) + 1;
-        const b = Math.floor(Math.random() * 10) + 1;
-        const plus = Math.random() < 0.5;
-        const op = plus ? "+" : "-";
+      const operator = plus ? "+" : "-";
+      document.getElementById("question").textContent =
+        `Q${questionCount + 1}: ( ${a}x ${operator} ${b}y )² を展開して！`;
 
-        questionText = `Q${questionCount + 1}: ( ${a}x ${op} ${b}y )² を展開して！`;
-        const a2 = a * a;
-        const ab2 = 2 * a * b;
-        const b2 = b * b;
-        correctExpansion = plus
-          ? `${a2}x²+${ab2}xy+${b2}y²`
-          : `${a2}x²-${ab2}xy+${b2}y²`;
-
+      if (plus) {
+        correctExpansion = `${a*a}x²+${2*a*b}xy+${b*b}y²`;
       } else {
-        const a = Math.floor(Math.random() * 10) + 1;
-        const b = Math.floor(Math.random() * 10) + 1;
-        const c = Math.floor(Math.random() * 10) + 1;
-        const d = Math.floor(Math.random() * 10) + 1;
-        const plus1 = Math.random() < 0.5;
-        const plus2 = Math.random() < 0.5;
-
-        const op1 = plus1 ? "+" : "-";
-        const op2 = plus2 ? "+" : "-";
-
-        questionText = `Q${questionCount + 1}: ( ${a}x ${op1} ${b}y )( ${c}x ${op2} ${d}y ) を展開して！`;
-
-        const ac = a * c;
-        const ad = a * d;
-        const bc = b * c;
-        const bd = b * d;
-        const mid = (plus1 ? 1 : -1) * ad + (plus2 ? 1 : -1) * bc;
-        const signMid = mid >= 0 ? "+" : "-";
-        const signLast = (plus1 === plus2) ? "+" : "-";
-
-        correctExpansion = `${ac}x²${signMid}${Math.abs(mid)}xy${signLast}${bd}y²`;
+        correctExpansion = `${a*a}x²-${2*a*b}xy+${b*b}y²`;
       }
-
-      document.getElementById("question").textContent = questionText;
     }
 
     function checkAnswer() {
@@ -97,10 +53,10 @@
       const result = document.getElementById("result");
 
       if (userAnswer === correctExpansion) {
-        result.textContent = "正解！ 🎉";
+        result.textContent = "正解！";
         correctCount++;
       } else {
-        result.textContent = `不正解 😢 正解は ${correctExpansion}`;
+        result.textContent = `不正解。正解は ${correctExpansion}`;
       }
 
       questionCount++;
@@ -126,6 +82,17 @@
       } else {
         alert("また遊んでね！");
       }
+    }
+
+    function addTerm(term) {
+      const input = document.getElementById("answer");
+      input.value += term;
+      input.focus();
+    }
+
+    function clearInput() {
+      document.getElementById("answer").value = "";
+      document.getElementById("answer").focus();
     }
 
     generateQuestion();
