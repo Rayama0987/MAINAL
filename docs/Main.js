@@ -51,8 +51,8 @@ class MathtestGame extends JFrame {
 
         if (isSquareForm) {
             // (ax±by)^2
-            a = rand.nextInt(100) + 1;
-            b = rand.nextInt(100) + 1;
+            a = rand.nextInt(10) + 1;
+            b = rand.nextInt(10) + 1;
             plus1 = rand.nextBoolean();
             String op = plus1 ? "+" : "-";
 
@@ -66,10 +66,10 @@ class MathtestGame extends JFrame {
 
         } else {
             // (ax±by)(cx±dy)
-            a = rand.nextInt(50) + 1;
-            b = rand.nextInt(50) + 1;
-            c = rand.nextInt(50) + 1;
-            d = rand.nextInt(50) + 1;
+            a = rand.nextInt(10) + 1;
+            b = rand.nextInt(10) + 1;
+            c = rand.nextInt(10) + 1;
+            d = rand.nextInt(10) + 1;
             plus1 = rand.nextBoolean();
             plus2 = rand.nextBoolean();
 
